@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        #container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #messages {
+            margin-top: 20px;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .message {
+            padding: 5px;
+            background: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>WebSocket Client</h1>
+        <input type="text" id="messageInput" placeholder="Enter your message..." />
+        <button onclick="sendMessage()">Send</button>
+        <div id="messages"></div>
+    </div>
+
+    <script>
+        // Connect to the WebSocket server
+        const ws = new WebSocket("ws://localhost:8090");
+
+        // Log connection open event
+        ws.onopen = () => console.log("Connected to the WebSocket server");
+
+        // Display incoming messages from the server
+        ws.onmessage = (event) => {
+            const messageContainer = document.getElementById("messages");
+            const newMessage = document.createElement("div");
+            newMessage.classList.add("message");
+            newMessage.textContent = "Server: " + event.data;
+            messageContainer.appendChild(newMessage);
+        };
+
+        // Function to send a message to the server
+        function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const message = input.value.trim();
+            if (message) {
+                // Send the message to the server
+                ws.send(message);
+
+                // Display the sent message in the message list
+                const messageContainer = document.getElementById("messages");
+                const newMessage = document.createElement("div");
+                newMessage.classList.add("message");
+                newMessage.textContent = "You: " + message;
+                messageContainer.appendChild(newMessage);
+
+                // Clear the input box
+                input.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
