@@ -19,7 +19,7 @@ First, clone the repository to your local machine using Git:
 
 bash
 Copy code
-git clone https://github.com/yourusername/websocket-server-client.git
+git clone https://github.com/ishan8727/websocket-server-client.git
 2. Install Dependencies
 Navigate to the project folder and install the required dependencies:
 
